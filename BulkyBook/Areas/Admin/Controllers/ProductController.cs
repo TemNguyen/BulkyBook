@@ -84,12 +84,14 @@ namespace BulkyBook.Areas.Admin.Controllers
                             System.IO.File.Delete(imgPath);
                         }
                     }
+
                     //write new file
                     using (var filesStreams =
                         new FileStream(Path.Combine(uploads, fileName + extendsion), FileMode.Create))
                     {
                         files[0].CopyTo(filesStreams);
                     }
+
                     //update product img url
                     productViewModel.Product.ImageUrl = @"\images\products\" + fileName + extendsion;
                 }
@@ -110,17 +112,34 @@ namespace BulkyBook.Areas.Admin.Controllers
                 {
                     _unitOfWork.Product.Update(productViewModel.Product);
                 }
+
                 _unitOfWork.Save();
                 return RedirectToAction(nameof(Index));
             }
-
+            else
+            {
+                productViewModel.CategoryList = _unitOfWork.Category.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                });
+                productViewModel.CoverTypeList = _unitOfWork.CoverType.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                });
+                if (productViewModel.Product.Id != 0)
+                {
+                    productViewModel.Product = _unitOfWork.Product.Get(productViewModel.Product.Id);
+                }
+            }
             return View(productViewModel);
         }
 
 
         #region API CALLS
 
-        [HttpGet]
+            [HttpGet]
         public IActionResult GetAll()
         {
             var allObj = _unitOfWork.Product.GetAll(includeProperties:"Category,CoverType");
@@ -134,6 +153,12 @@ namespace BulkyBook.Areas.Admin.Controllers
             if (objFromdb == null)
             {
                 return Json(new {success = false, message = "Error while deleting"});
+            }
+            string webRootPath = _hostEnvironment.WebRootPath;
+            var imgPath = Path.Combine(webRootPath, objFromdb.ImageUrl.TrimStart('\\'));
+            if (System.IO.File.Exists(imgPath))
+            {
+                System.IO.File.Delete(imgPath);
             }
             _unitOfWork.Product.Remove(objFromdb);
             _unitOfWork.Save();
