@@ -9,18 +9,13 @@ using BulkyBook.DataAccess.Repository.IRepository;
 
 namespace BulkyBook.DataAccess.Repository
 {
-    public class CompanyRepository : Repository<Company>, ICompanyRepository
+    public class ApplicationUserRepository : Repository<ApplicationUser>, IApplicationUserRepository
     {
         private readonly ApplicationDbContext _db;
 
-        public CompanyRepository(ApplicationDbContext db) : base(db)
+        public ApplicationUserRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
-        }
-
-        public void Update(Company company)
-        {
-            _db.Update(company);
         }
     }
 }

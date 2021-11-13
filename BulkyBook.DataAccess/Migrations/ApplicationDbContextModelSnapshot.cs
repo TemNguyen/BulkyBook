@@ -46,9 +46,6 @@ namespace BulkyBook.DataAccess.Migrations
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CityAddress")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsAuthorizedCompany")
                         .HasColumnType("bit");
 
@@ -62,6 +59,9 @@ namespace BulkyBook.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StreetAddress")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

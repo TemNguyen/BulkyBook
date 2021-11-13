@@ -11,7 +11,23 @@ function loadDataTable(parameters) {
             "url": "/Admin/Company/GetAll"
         },
         "columns": [
-            { "data": "name", "width": "60%" },
+            { "data": "name", "width": "15%" },
+            { "data": "streetAddress", "width": "15%" },
+            { "data": "city", "width": "10%" },
+            { "data": "state", "width": "10%" },
+            { "data": "postalCode", "width": "10%" },
+            { "data": "phoneNumber", "width": "15%" },
+            {
+                "data": "isAuthorizedCompany",
+                "render": function(data) {
+                    if (data) {
+                        return '<input type="checkbox" disabled checked />';
+                    } else {
+                        return '<input type="checkbox" disabled />';
+                    }
+                },
+                "width": "10%"
+            },
             {
                 "data": "id",
                 "render": function(data) {
@@ -28,7 +44,7 @@ function loadDataTable(parameters) {
                             </div>
                             `;
                 },
-                "width": "40%"
+                "width": "25%"
             }
         ]
 
